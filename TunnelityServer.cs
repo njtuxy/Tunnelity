@@ -126,9 +126,15 @@ public class TunnelityServer : MonoBehaviour
 			case "click_game_object":     
 				cmd = new TunnelityClickGameObjectCommand();
 				break;
-			case "get_game_object_child":
-				cmd = new TunnelityGetGameObjectChild();
+			case "get_game_object_child_by_index":
+				cmd = new TunnelityGetGameObjectChildByIndex();
 				break;
+			case "get_game_object_child_by_index_with_details":
+				cmd = new TunnelityGetGameObjectChildByIndexWithDetails();
+				break;
+//			case "get_game_object_all_children":
+//				cmd = new TunnelityGetGameObjectAllChildren();
+//				break;
 			case "get_FPS":
 				cmd = new TunnelityGetFPSValue();
 				break;
@@ -573,13 +579,12 @@ public class TunnelityServer : MonoBehaviour
 					point = UICamera.mainCamera.WorldToScreenPoint(obj.transform.position);
 					UILabel[] labels = obj.GetComponentsInChildren<UILabel>();
 					for(int i=0; i< labels.Length; i++){
-						res["text"+i] = labels[i].text;			
+						res["text"+i.ToString("D2")] = labels[i].text;
 					}
 				}
 				res["x"] = point.x;
 				res["y"] = point.y;
-			}
-			
+			}			
 		}
 	}
 	
@@ -610,7 +615,7 @@ public class TunnelityServer : MonoBehaviour
 		
 	}
 
-	public class TunnelityGetGameObjectChild:TunnelityCommand
+	public class TunnelityGetGameObjectChildByIndex:TunnelityCommand
 	{
 		public override void Process(Hashtable req, Hashtable res)
 		{				
@@ -626,18 +631,7 @@ public class TunnelityServer : MonoBehaviour
 
 				int child_index = Convert.ToInt32(GetJsonString(req, "child_index"));
 
-				Transform child = obj.transform.GetChild(child_index);
-
-//				if(GetJsonString(req, "i") == "true"){					
-//					point = Camera.main.WorldToScreenPoint(obj.transform.position);
-//				}				
-//				else{
-//					point = UICamera.mainCamera.WorldToScreenPoint(obj.transform.position);
-//					UILabel[] labels = obj.GetComponentsInChildren<UILabel>();
-//					for(int i=0; i< labels.Length; i++){
-//						res["text"+i] = labels[i].text;			
-//					}
-//				}
+				Transform child = obj.transform.GetChild(child_index);			
 
 				point = UICamera.mainCamera.WorldToScreenPoint(child.position);
 
@@ -649,6 +643,46 @@ public class TunnelityServer : MonoBehaviour
 		}
 	}
 
+	public class TunnelityGetGameObjectChildByIndexWithDetails:TunnelityCommand
+	{
+		public override void Process(Hashtable req, Hashtable res)
+		{				
+			Vector2 point;
+			string object_name = GetJsonString(req, "object_name");
+			GameObject obj = GameObject.Find(object_name);
+			if(obj == null){
+				res["object_found"] = "false";	
+			}
+			
+			else{
+				res["object_found"] = "true";
+				
+				int child_index = Convert.ToInt32(GetJsonString(req, "child_index"));
+				
+				Transform child = obj.transform.GetChild(child_index);
+
+				point = UICamera.mainCamera.WorldToScreenPoint(child.position);
+				
+//				res["x"] = point.x;
+//				res["y"] = point.y;
+//				res["name"]  = child.name;
+
+//				point = UICamera.mainCamera.WorldToScreenPoint(obj.transform.position);
+				UILabel[] labels = child.gameObject.GetComponentsInChildren<UILabel>();
+				for(int i=0; i< labels.Length; i++){
+//					Hashtable h1 = new Hashtable();
+//					h1.Add("bbb", "111");
+					//						h1.Add(labels[i].text);
+				    res["text"+i.ToString("D2")] = labels[i].text;
+//					res[i]= h1;
+				}
+			}
+//			res["x"] = point.x;
+//			res["y"] = point.y;
+//
+			}
+			
+	}
 
 	//Method to get FPS value back, need to work with FPSMonitor.cs
 	public class TunnelityGetFPSValue:TunnelityCommand
