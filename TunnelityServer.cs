@@ -132,9 +132,12 @@ public class TunnelityServer : MonoBehaviour
 			case "get_game_object_child_by_index_with_details":
 				cmd = new TunnelityGetGameObjectChildByIndexWithDetails();
 				break;
-//			case "get_game_object_all_children":
-//				cmd = new TunnelityGetGameObjectAllChildren();
-//				break;
+			case "get_all_objects_with_the_same_name":
+				cmd = new TunnelityGetAllObjectWithTheSameName();
+				break;
+			case "get_all_one_objects_from_the_same_name_objects_by_index":
+				cmd = new TunnelityGetOnevisibleObjectFromTheSameNameObjectsByIndex();
+				break;
 			case "get_FPS":
 				cmd = new TunnelityGetFPSValue();
 				break;
@@ -682,6 +685,85 @@ public class TunnelityServer : MonoBehaviour
 //
 			}
 			
+	}
+
+
+	public class TunnelityGetAllObjectWithTheSameName:TunnelityCommand
+	{
+		public override void Process(Hashtable req, Hashtable res)
+		{				
+			Vector2 point;
+			int counter = 1;
+			string object_name = GetJsonString(req, "object_name");
+			GameObject obj = GameObject.Find(object_name);
+			if(obj == null){
+				res["object_found"] = "false";	
+			}
+			
+			else{
+
+				foreach (var gameObj in FindObjectsOfType(typeof(GameObject)) as GameObject[])
+				{
+					if(gameObj.name == object_name)
+					{
+						res[counter] = gameObj.name;
+						counter++;
+					}
+				}
+			}
+		}		
+	}
+
+	public class TunnelityGetOnevisibleObjectFromTheSameNameObjectsByIndex:TunnelityCommand
+	{
+		public override void Process(Hashtable req, Hashtable res)
+		{				
+			Vector2 point;
+			int counter = 1;
+			string object_name = GetJsonString(req, "object_name");
+			int index = Convert.ToInt32(GetJsonString(req, "index"));
+			GameObject obj = GameObject.Find(object_name);
+			Camera cam = Camera.main;
+			Plane[] planes =GeometryUtility.CalculateFrustumPlanes(Camera.main);
+
+			if(obj == null){
+				res["object_found"] = "false";	
+			}
+			
+			else{				
+				foreach (var gameObj in FindObjectsOfType(typeof(GameObject)) as GameObject[])
+				{
+					if(gameObj.name == object_name)
+					{
+						//Only return the visible ones
+//						Vector3 point1 = cam.WorldToViewportPoint(gameObj.transform.position);
+//						int x = (int)Math.Ceiling(point1.x);
+//						int y = (int)Math.Ceiling(point1.y);
+//						int z = (int)Math.Ceiling(point1.z);
+//						Debug.Log("point1:" + point1);
+//						Debug.Log("x:" + x);
+//						Debug.Log("y:" + y);
+//						Debug.Log("z:" + z);
+
+//						if(x > 0 && y> 0 && z > 0){
+							Debug.Log("counter: " + counter + " index: " + index);
+							if( counter == index)
+							{
+								point = UICamera.mainCamera.WorldToScreenPoint(gameObj.transform.position);
+									UILabel[] labels = gameObj.GetComponentsInChildren<UILabel>();
+									for(int i=0; i< labels.Length; i++){
+										res["text"+i.ToString("D2")] = labels[i].text;
+									}
+									res["x"]  = point.x;
+									res["y"]  = point.y;
+							}
+							counter++;
+//						}
+					}
+				 	
+				}
+			}
+		}		
 	}
 
 	//Method to get FPS value back, need to work with FPSMonitor.cs
