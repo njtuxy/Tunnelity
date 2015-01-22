@@ -122,7 +122,9 @@ public class TunnelityServer : MonoBehaviour
 			case "get_game_object":		  
 				cmd = new TunnelityGetGameObjectCommand();
 				break;
-				
+			case "get_enabled_status":
+				cmd = new TunnelityGetGameObjectEnabledStatus();
+				break;
 			case "click_game_object":     
 				cmd = new TunnelityClickGameObjectCommand();
 				break;
@@ -590,7 +592,51 @@ public class TunnelityServer : MonoBehaviour
 			}			
 		}
 	}
-	
+
+	public class TunnelityGetGameObjectEnabledStatus:TunnelityCommand
+	{
+		public override void Process(Hashtable req, Hashtable res)
+		{				
+			Vector3 point;
+			Vector3 point1;
+			Vector3 point2;
+			string object_name = GetJsonString(req, "object_name");
+			GameObject obj = GameObject.Find(object_name);
+			if(obj == null){
+				res["object_found"] = "false";	
+			}
+			
+			else{
+				res["object_found"] = "true";		
+//				if(obj.renderer.isVisible)
+//				{
+//				    GameObject.Find("").camera.WorldToScreenPoint
+//					point = Camera.current.WorldToScreenPoint(obj.transform.position);
+//					point1 = UICamera.mainCamera.WorldToScreenPoint(obj.transform.position);
+//					point2 = obj.transform.position;
+//					Debug.Log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>1111111111");
+////					Debug.Log(point);
+////					Debug.Log(point1);
+//					Debug.Log(point2);
+//					Debug.Log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>12222");
+////					Debug.Log(Camera.allCameras);
+//				    foreach(var item in Camera.allCameras){
+//					Debug.Log(item.WorldToScreenPoint(obj.transform.position));
+//					}				
+//				 	Debug.Log(">>>>>>>>>>>>>>>>>>>>>>>>>>>5555");
+//					Debug.Log(Screen.width);
+//					Debug.Log(Screen.height);
+//				    Debug.Log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>1111111111");
+//					
+//				}
+//				else{
+//					res["enabled"] = "false";		
+//				}
+
+			}			
+		}
+	}
+
 	public class TunnelityClickGameObjectCommand:TunnelityCommand
 	{
 		public override void Process(Hashtable req, Hashtable res)
@@ -733,7 +779,7 @@ public class TunnelityServer : MonoBehaviour
 			else{				
 				foreach (var gameObj in FindObjectsOfType(typeof(GameObject)) as GameObject[])
 				{
-					if(gameObj.name == object_name)
+					if(gameObj.name == object_name)	
 					{
 						//Only return the visible ones
 //						Vector3 point1 = cam.WorldToViewportPoint(gameObj.transform.position);
