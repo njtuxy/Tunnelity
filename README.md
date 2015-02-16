@@ -1,43 +1,48 @@
 Tunnelity
 =========
 
-Tunnelity is a C# socket server which allows any socket client to access a running Unity game's properties. 
+Tunnelity is a C# socket server which allows socket client to communicate with your Unity game instance, and get different type of properties back.
 
 
 =========
-<h2> How to set it up for your Unity game </h2>
 
-(1) Copy <code> Tunnelity.prefab </code>  and  <code> TunnelityServer.cs </code>  to <code> UnityGameFolder/Assets/Plugins/ </code> 
+<h2> Add Tunnelity to Unity project from Editor </h2>
 
-(2) Open Unity editor and open the scene that will be loadded when the game starts.
+(1) Create a new folder <code> Tunnelity </code> under <code> #{YourUnityProject}/Assets/Plugins/ </code>, Download <code>Tunnelity.prefab</code> and <code> TunnelityServer.cs </code> to this new folder
 
-(3) In Project view locate Tunnelity.prefab and drag it to the scene.
+(2) Open the first scene of the Unity project. (Find which is the first scene by going to File->Build Settings)
 
-(4) Click <code> Tunnelity.prefab </code>  and add the link to <code> TunnelityServer.cs </code>.
+(3) Drag <code> Tunnelity.prefab </code> to the scene
 
-=========
-<h2> Install JsonFx to your Unity project if you don't have it </h2>
-
-(1) Go to UnityProject/Assets/Plugins
-
-(2) Download the JsonFx files by doing: git clone git@las-ghub01-lnx.corp.kabam.com:unity-qa/JsonFx.git
+(4) Click <code> Tunnelity.prefab </code> and check its script component, add the link to <code> TunnelityServer.cs </code>
 
 =========
-<h2> Install NGUI to your Unity project if you don't have it </h2>
+
+
+<h2> If "NGUI" is not in Assets/Plugins/ : </h2>
 
 (1) Go to UnityProject/Assets/Plugins
 
 (2) Download the NGUI files by doing: git clone git@las-ghub01-lnx.corp.kabam.com:unity-qa/NGUI.git
 
+=========
 
+<h2> If "Fuse" in not in Assets/Plugins/ :</h2>
 
-<h2> Give it a test </h2>
+(1) Go to UnityProject/Assets/Plugins
 
-(1) Launch the game on you machine.
+(2) Download the JsonFx files by doing: git clone git@las-ghub01-lnx.corp.kabam.com:unity-qa/JsonFx.git
 
-(2) Write a custome socket client which can send json request to <code> localhost:9921 </code> , here is a ruby example:
+(3) Update <code> Tunnelity.cs </code>, replace every <code> EB.JSON </code> with <code> JsonFx.JSON </code>
 
- 
+=========
+
+<h2> Test whether it works:</h2>
+
+(1) Launch the game in Unity Editor
+
+(2) Run this ruby script:
+
  	require 'socket'
     require 'json'
 	@host = '127.0.0.1'
@@ -59,10 +64,10 @@ Tunnelity is a C# socket server which allows any socket client to access a runni
 	p send_josn_request_to_socket(json_request_for_get_screen)
 
 	@s.close
+	
+(3) If everything works fine the response will be a valid JSON which contains the screen size	
  
 =========
-<h2> More examples: </h2>
-
 
 
 
