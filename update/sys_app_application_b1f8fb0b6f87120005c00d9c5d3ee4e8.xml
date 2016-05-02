@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update sys_domain="global" table="sys_app_application">
+    <sys_app_application action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <category/>
+        <description/>
+        <device_type>browser</device_type>
+        <hint/>
+        <name>Yan Testing App</name>
+        <order/>
+        <roles>x_yan_testing_app.user</roles>
+        <sys_class_name>sys_app_application</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2016-05-02 18:38:15</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>b1f8fb0b6f87120005c00d9c5d3ee4e8</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>Yan Testing App</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Yan Testing App" source="x_yan_testing_app">71f8b70b6f87120005c00d9c5d3ee47e</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Yan Testing App">71f8b70b6f87120005c00d9c5d3ee47e</sys_scope>
+        <sys_update_name>sys_app_application_b1f8fb0b6f87120005c00d9c5d3ee4e8</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2016-05-02 18:38:16</sys_updated_on>
+        <title>Yan Testing App</title>
+        <view_name/>
+    </sys_app_application>
+</record_update>
